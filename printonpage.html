@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+  <form onsubmit="storing(event)">
+    <label>NAME</label>
+    <input type="text" name="Username" required/>
+    <label>EMAIL</label>
+    <input type="email" name="email" required/>
+    <button>submit</button>
+  </form>
+  <ul id="listofitems"></ul>
+  <script>
+    function storing(event)
+    {
+      event.preventDefault()
+      let user=event.target.Username.value
+      let mail=event.target.email.value
+      
+     let myobj={
+      user,
+      mail
+     }
+     let stringed=JSON.stringify(myobj)
+    localStorage.setItem(myobj.mail,stringed)
+    showUser(myobj)
+    }
+    function showUser(myobj){
+        let parent=document.getElementById("listofitems")
+        let child=document.createElement("li")
+        child.textContent=myobj.user+ "-" +myobj.mail
+        parent.appendChild(child)
+    }
+  </script>
+</body>
+</html>
