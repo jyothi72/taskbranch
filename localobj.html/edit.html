@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+  <form onsubmit="storing(event)">
+    <label>NAME</label>
+    <input type="text" name="Username" id="inputtag" required/>
+    <label>EMAIL</label>
+    <input type="email" name="email" id="emailtag"required/>
+    <button>submit</button>
+  </form>
+  <ul id="listofitems"></ul>
+  <script>
+    function storing(event)
+    {
+      event.preventDefault()
+      let user=event.target.Username.value
+      let mail=event.target.email.value
+      
+     let myobj={
+      user,
+      mail
+     }
+     let stringed=JSON.stringify(myobj)
+    localStorage.setItem(myobj.mail,stringed)
+    showUser(myobj)
+    }
+    function showUser(myobj){
+        let parent=document.getElementById("listofitems")
+        let child=document.createElement("li")
+       
+        child.textContent=myobj.user+ "-" +myobj.mail
+        let deletebutton=document.createElement("input")
+        deletebutton.type="button"
+        deletebutton.value="delete"
+        deletebutton.onclick=()=>{
+            parent.removeChild(child)
+            localStorage.removeItem(myobj.mail)
+
+        }
+        let editbutton=document.createElement("input")
+        editbutton.type="button"
+        editbutton.value="edit"
+        editbutton.onclick=()=>{
+            parent.removeChild(child)
+            localStorage.removeItem(myobj.mail)
+            document.getElementById("inputtag").value=myobj.user
+            document.getElementById("emailtag").value=myobj.mail
+        }
+
+        parent.appendChild(child)
+        child.appendChild(deletebutton)
+        child.appendChild(editbutton)
+    }
+  </script>
+</body>
+</html>
