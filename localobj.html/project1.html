@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <title>expense tracker</title>
+</head>
+<body>
+    <div class="container">
+        <form onsubmit="savetolocal(event)">
+            <label for="expense amount" class="form-label">Expense Amount</label>
+            <input type="number" id="expense amount" class="form-control"name="amount"/>
+            <label for="description" class="form-label">Choose Description</label>
+            <input type="text" id="description" class="form-control"name="description"/>
+            <label for="category"class="form-label">Choose Category</label>
+            <select class="form-select" name="cate">
+                <option>Movies</option>
+                <option>Petrol</option>
+                <option>Grocery</option>
+                <option>Electricity</option>
+            </select>
+            <button>AddExpense</button>
+        </form>
+        <ul id="listofitems"></ul>
+        </div>
+        
+    <script>
+        function savetolocal(event){
+            event.preventDefault();
+            const expenseAmount=event.target.amount.value;
+            const Description=event.target.description.value;
+            const Category=event.target.cate.value
+            let obj={
+                expenseAmount,
+                Description,
+                Category
+            }
+            localStorage.setItem(obj.Description,JSON.stringify(obj))
+        
+            showuser(obj)
+        }
+            function showuser(obj)
+            {
+                let parent=document.getElementById("listofitems")
+                let child=document.createElement("li")
+
+                child.textContent=obj.Description+"-"+obj.expenseAmount+"-"+obj.Category
+                let deletebutton=document.createElement("input")
+                 deletebutton.type="button"
+                deletebutton.value="delete"
+               deletebutton.onclick=()=>{
+                parent.removeChild(child)
+                localStorage.removeItem(obj.Description)
+            }
+            let editbutton=document.createElement("input")
+           editbutton.type="button"
+           editbutton.value="edit"
+           editbutton.onclick=()=>{
+            parent.removeChild(child)
+            localStorage.removeItem(obj.Description)
+            document.getElementById("expense amount").value=obj.expenseAmount
+            document.getElementById("description").value=obj.Description
+        }
+            parent.appendChild(child)
+        child.appendChild(deletebutton)
+        child.appendChild(editbutton)
+            }
+    </script>
+</body>
+</html>
+
+
+
+
+
