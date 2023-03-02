@@ -15,8 +15,13 @@
       event.preventDefault()
       let user=event.target.Username.value
       let mail=event.target.email.value
-      localStorage.setItem("name",user)
-      localStorage.setItem("mail",mail)
+      
+     let myobj={
+      user,
+      mail
+     }
+     let myobjserialize=JSON.stringify(myobj)
+    localStorage.setItem("myobj",myobjserialize)
     }
   </script>
 </body>

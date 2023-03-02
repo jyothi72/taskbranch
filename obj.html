@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+  <form onsubmit="storing(event)">
+    <label>NAME</label>
+    <input type="text" name="Username" required/>
+    <label>EMAIL</label>
+    <input type="email" name="email" required/>
+    <button>submit</button>
+  </form>
+  <script>
+    function storing(event)
+    {
+      event.preventDefault()
+      let user=event.target.Username.value
+      let mail=event.target.email.value
+      
+     let myobj={
+      user,
+      mail
+     }
+     let myobjserialize=JSON.stringify(myobj)
+    localStorage.setItem("myobj",myobjserialize)
+    }
+  </script>
+</body>
+</html>

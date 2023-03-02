@@ -28,8 +28,18 @@
     function showUser(myobj){
         let parent=document.getElementById("listofitems")
         let child=document.createElement("li")
+       
         child.textContent=myobj.user+ "-" +myobj.mail
+        let deletebutton=document.createElement("input")
+        deletebutton.type="button"
+        deletebutton.value="delete"
+        deletebutton.onclick=()=>{
+            parent.removeChild(child)
+            localStorage.removeItem(myobj.mail)
+
+        }
         parent.appendChild(child)
+        child.appendChild(deletebutton)
     }
   </script>
 </body>

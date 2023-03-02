@@ -23,7 +23,7 @@
         </form>
         <ul id="listofitems"></ul>
         </div>
-        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
         
     <script>
         function savetolocal(event){
@@ -36,10 +36,27 @@
                 Description,
                 Category
             }
-            localStorage.setItem(obj.Description,JSON.stringify(obj))
+            axios.post("https://crudcrud.com/api/9cd5dc9ca61d46b18d722182d977314e/expense" ,obj)
+            .then((response)=>{
+                showuser(response.data)
+                console.log(response)
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
         
-            showuser(obj)
+           
         }
+        window.addEventListener("DOMContentLoaded",() => {
+            axios.get("https://crudcrud.com/api/9cd5dc9ca61d46b18d722182d977314e/expense")
+            .then((response)=>{console.log(response)
+                for(var i=0;i<response.data.length;i++)
+                {
+                    showuser(response.data[i])
+                }
+            })
+            .catch((error)=>{console.log(error)})
+        })
             function showuser(obj)
             {
                 let parent=document.getElementById("listofitems")

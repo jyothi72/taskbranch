@@ -38,6 +38,13 @@
             localStorage.removeItem(myobj.mail)
 
         }
+        let editbutton=document.createElement("input")
+        editbutton.type="button"
+        editbutton.value="edit"
+        editbutton.onclick=()=>{
+            parent.removeChild(child)
+            localStorage.removeItem(myobj.mail)
+
         parent.appendChild(child)
         child.appendChild(deletebutton)
     }
