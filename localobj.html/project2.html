@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <title>expense tracker</title>
+</head>
+<body>
+    
+    <div class="container d-flex justify-content-center">
+        <form  id="form" onsubmit= "saveToCrudCrud(event)">
+            <label for="description" class="form-label">Choose Description</label>
+            <input type="text" id="description" class="form-control" name="description"/>
+
+            <label for="selling" class="form-label">SellingPrice</label>
+            <input type="number" id="selling" class="form-control" name="sellingprice"/>
+            <button>AddExpense</button>
+        
+        </form> 
+    </div>
+        
+        <ul id="list-of-items"></ul>
+        <hr>    
+    <h3 id="total-selling-price"></h3>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
+        <script>
+    
+    async function saveToCrudCrud(event){ 
+    try{
+        event.preventDefault();
+        let form = document.getElementById('form');    
+        let description = event.target.description.value;
+        let sellingprice = event.target.sellingprice.value;
+        let products = {        
+            description,
+            sellingprice
+        };        
+        const response = await axios.post("https://crudcrud.com/api/eaa40a3e4d4348e7971678bbb47ffeb7/products"
+        ,products)
+        showExpenseDetailsOnScreen(response.data)
+    }       
+    
+    catch(err){
+        document.body.innerHTML = document.body.innerHTML + "<h4> Something went wrong </h4>"
+        console.log(err)
+    }
+};
+
+let totalSellingPrice = 0;
+function displayTotalSellingPrice() {
+    let totalSellingPriceDisplay = document.getElementById("total-selling-price");
+    totalSellingPriceDisplay.innerHTML = `Total Amount : $. ${totalSellingPrice}`;
+}
+
+
+async function showExpenseDetailsOnScreen(products){
+    try{
+        let parent = document.getElementById('list-of-items');
+        let child = document.createElement('li');    
+        child.textContent =  products.description + "---$:" + products.sellingprice;
+
+        totalSellingPrice += parseInt(products.sellingprice);
+        displayTotalSellingPrice();
+
+        let deleteBtn = document.createElement('input');
+        deleteBtn.type = 'button';
+        deleteBtn.value = 'Delete Product';
+        deleteBtn.classList = "btn btn-danger ms-2 rounded-pill"
+        deleteBtn.onclick = async () => {
+            let res = await axios.delete(`https://crudcrud.com/api/eaa40a3e4d4348e7971678bbb47ffeb7/products/${products._id}`)
+            console.log(res)           
+            totalSellingPrice -= parseInt(products.sellingprice);
+            displayTotalSellingPrice();
+            parent.removeChild(child);
+        }   
+        
+        parent.appendChild(child);
+        child.appendChild(deleteBtn);  
+        child.classList = "list-group-item fw-bold";
+        parent.classList = "mb-3 mt-3 fs-4";
+        form.reset()       
+        }
+
+        catch(error){
+            console.log(error)
+        }      
+}
+
+window.addEventListener("DOMContentLoaded", async(e) =>{
+    try{
+        let response = await axios.get("https://crudcrud.com/api/eaa40a3e4d4348e7971678bbb47ffeb7/products")    
+        for(let i=0 ; i<response.data.length ; i++){
+                showExpenseDetailsOnScreen(response.data[i])
+               }
+        }
+    catch(error){
+        console.log(error)
+    }
+})
+            
+           
+        
+        
+                
+        </script>
+        <body>
+        <html>
